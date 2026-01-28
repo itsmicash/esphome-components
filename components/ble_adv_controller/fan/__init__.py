@@ -1,18 +1,8 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import fan
-
-from esphome.const import (
-    CONF_OUTPUT_ID,
-    CONF_RESTORE_MODE,
-)
-
-from .. import (
-    bleadvcontroller_ns,
-    ENTITY_BASE_CONFIG_SCHEMA,
-    entity_base_code_gen,
-    BleAdvEntity,
-)
+from esphome.const import CONF_OUTPUT_ID, CONF_RESTORE_MODE
+from .. import bleadvcontroller_ns, ENTITY_BASE_CONFIG_SCHEMA, entity_base_code_gen, BleAdvEntity
 
 from ..const import (
     CONF_BLE_ADV_SPEED_COUNT,
@@ -31,9 +21,7 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_BLE_ADV_DIRECTION_SUPPORTED, default=True): cv.boolean,
             cv.Optional(CONF_BLE_ADV_OSCILLATION_SUPPORTED, default=False): cv.boolean,
             cv.Optional(CONF_BLE_ADV_FORCED_REFRESH_ON_START, default=True): cv.boolean,
-            cv.Optional(CONF_RESTORE_MODE, default="RESTORE_DEFAULT_OFF"): cv.enum(
-                fan.RESTORE_MODES, upper=True, space="_"
-            ),
+            cv.Optional(CONF_RESTORE_MODE, default="RESTORE_DEFAULT_OFF"): cv.enum(fan.RESTORE_MODES, upper=True, space="_"),
         }
     ).extend(ENTITY_BASE_CONFIG_SCHEMA),
 )
