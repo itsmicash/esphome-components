@@ -28,7 +28,8 @@ BleAdvSecLight = bleadvcontroller_ns.class_('BleAdvSecLight', light.LightOutput,
 
 CONFIG_SCHEMA = cv.All(
     cv.Any(
-        light.RGB_LIGHT_SCHEMA.extend(
+        # Hauptlicht: RGB_LIGHT_SCHEMA -> rgb_light_schema(BleAdvLight)
+        light.rgb_light_schema(BleAdvLight).extend(
             {
                 cv.GenerateID(CONF_OUTPUT_ID): cv.declare_id(BleAdvLight),
                 cv.Optional(CONF_COLD_WHITE_COLOR_TEMPERATURE, default="167 mireds"): cv.color_temperature,
@@ -36,13 +37,12 @@ CONFIG_SCHEMA = cv.All(
                 cv.Optional(CONF_CONSTANT_BRIGHTNESS, default=False): cv.boolean,
                 cv.Optional(CONF_MIN_BRIGHTNESS, default="1%"): cv.percentage,
                 cv.Optional(CONF_BLE_ADV_SPLIT_DIM_CCT, default=False): cv.boolean,
-                # override default value of default_transition_length to 0s as mostly not supported by those lights
                 cv.Optional(CONF_DEFAULT_TRANSITION_LENGTH, default="0s"): cv.positive_time_period_milliseconds,
-                # override default value for restore mode, to always restore as it was if possible
                 cv.Optional(CONF_RESTORE_MODE, default="RESTORE_DEFAULT_OFF"): cv.enum(light.RESTORE_MODES, upper=True, space="_"),
             }
         ).extend(ENTITY_BASE_CONFIG_SCHEMA),
-        light.RGB_LIGHT_SCHEMA.extend(
+        # Sekundärlicht: RGB_LIGHT_SCHEMA -> rgb_light_schema(BleAdvSecLight)
+        light.rgb_light_schema(BleAdvSecLight).extend(
             {
                 cv.GenerateID(CONF_OUTPUT_ID): cv.declare_id(BleAdvSecLight),
                 cv.Required(CONF_BLE_ADV_SECONDARY): cv.one_of(True),
