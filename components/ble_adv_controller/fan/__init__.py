@@ -23,7 +23,6 @@ from ..const import (
 
 BleAdvFan = bleadvcontroller_ns.class_('BleAdvFan', fan.Fan, BleAdvEntity)
 
-# Wir übergeben BleAdvFan an die fan_schema Funktion
 CONFIG_SCHEMA = cv.All(
     fan.fan_schema(BleAdvFan).extend(
         {
@@ -32,13 +31,12 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_BLE_ADV_DIRECTION_SUPPORTED, default=True): cv.boolean,
             cv.Optional(CONF_BLE_ADV_OSCILLATION_SUPPORTED, default=False): cv.boolean,
             cv.Optional(CONF_BLE_ADV_FORCED_REFRESH_ON_START, default=True): cv.boolean,
-            # override default value for restore mode
             cv.Optional(CONF_RESTORE_MODE, default="RESTORE_DEFAULT_OFF"): cv.enum(
                 fan.RESTORE_MODES, upper=True, space="_"
             ),
         }
     ).extend(ENTITY_BASE_CONFIG_SCHEMA),
-)extend(ENTITY_BASE_CONFIG_SCHEMA),
+)
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_OUTPUT_ID])
