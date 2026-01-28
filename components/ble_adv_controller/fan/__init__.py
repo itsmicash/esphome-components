@@ -23,20 +23,22 @@ from ..const import (
 
 BleAdvFan = bleadvcontroller_ns.class_('BleAdvFan', fan.Fan, BleAdvEntity)
 
+# In ESPHome 2024.6+ wurde FAN_ENTITY_SCHEMA durch fan.fan_schema() ersetzt
 CONFIG_SCHEMA = cv.All(
-    fan.FAN_ENTITY_SCHEMA.extend(
+    fan.fan_schema().extend(
         {
             cv.GenerateID(CONF_OUTPUT_ID): cv.declare_id(BleAdvFan),
-            cv.Optional(CONF_BLE_ADV_SPEED_COUNT, default=6): cv.one_of(0,3,6),
+            cv.Optional(CONF_BLE_ADV_SPEED_COUNT, default=6): cv.one_of(0, 3, 6),
             cv.Optional(CONF_BLE_ADV_DIRECTION_SUPPORTED, default=True): cv.boolean,
             cv.Optional(CONF_BLE_ADV_OSCILLATION_SUPPORTED, default=False): cv.boolean,
             cv.Optional(CONF_BLE_ADV_FORCED_REFRESH_ON_START, default=True): cv.boolean,
-            # override default value for restore mode, to always restore as it was if possible
-            cv.Optional(CONF_RESTORE_MODE, default="RESTORE_DEFAULT_OFF"): cv.enum(fan.RESTORE_MODES, upper=True, space="_"),
+            # override default value for restore mode
+            cv.Optional(CONF_RESTORE_MODE, default="RESTORE_DEFAULT_OFF"): cv.enum(
+                fan.RESTORE_MODES, upper=True, space="_"
+            ),
         }
     ).extend(ENTITY_BASE_CONFIG_SCHEMA),
 )
-
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_OUTPUT_ID])
