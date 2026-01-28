@@ -23,9 +23,9 @@ from ..const import (
 
 BleAdvFan = bleadvcontroller_ns.class_('BleAdvFan', fan.Fan, BleAdvEntity)
 
-# In ESPHome 2024.6+ wurde FAN_ENTITY_SCHEMA durch fan.fan_schema() ersetzt
+# Wir übergeben BleAdvFan an die fan_schema Funktion
 CONFIG_SCHEMA = cv.All(
-    fan.fan_schema().extend(
+    fan.fan_schema(BleAdvFan).extend(
         {
             cv.GenerateID(CONF_OUTPUT_ID): cv.declare_id(BleAdvFan),
             cv.Optional(CONF_BLE_ADV_SPEED_COUNT, default=6): cv.one_of(0, 3, 6),
@@ -38,6 +38,7 @@ CONFIG_SCHEMA = cv.All(
             ),
         }
     ).extend(ENTITY_BASE_CONFIG_SCHEMA),
+)extend(ENTITY_BASE_CONFIG_SCHEMA),
 )
 
 async def to_code(config):
